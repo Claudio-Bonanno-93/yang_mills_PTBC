@@ -214,7 +214,6 @@ void rand_algebra_gauss_matrix_SuN(SuN *A)
 // l2 norm of the matrix
 double norm_SuN(SuN const * const A);
 
-
 // real part of the trace /N
 double retr_SuN(SuN const * const A);
 
@@ -222,6 +221,8 @@ double retr_SuN(SuN const * const A);
 // imaginary part of the trace /N
 double imtr_SuN(SuN const * const A);
 
+// carg of the trace
+inline double argtr_SuN(SuN const * const A);
 
 // LU decomposition with partial pivoting
 //   from Numerical Recipes in C, pag 46
@@ -342,7 +343,6 @@ int scheck_SuN(SuN const * const restrict A)
 // sunitarize
 void unitarize_SuN(SuN * restrict A)
   {
-  const double beta_aux=1.0e+20;
   double check;
   SuN force, guess, guess_old, helper, helper1, helper2;
 
@@ -358,7 +358,7 @@ void unitarize_SuN(SuN * restrict A)
          equal_SuN(&guess_old, &guess);
 
          // heatbath
-         single_heatbath_aux_SuN(&guess, &force, beta_aux); // minimize Tr(force*guess)
+         cool_SuN(&guess, &force); // maximize Tr(force*guess)
 
          // compute the check
          equal_SuN(&helper, &guess);
